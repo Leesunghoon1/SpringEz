@@ -1,0 +1,9 @@
+package com.myweb.www.repository;
+
+import com.myweb.www.domain.BoardVO;
+
+public interface BoardDAO {
+
+	int register(BoardVO bvo);
+
+}
