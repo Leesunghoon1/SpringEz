@@ -1,0 +1,13 @@
+package com.myweb.www;
+
+import org.springframework.test.context.ContextConfiguration;
+
+@ContextConfiguration(classes = {com.myweb.www.config.RootConfig.class})
+//해당하는 클레스를 가져오겠다
+public class BoardTest {
+//테스트 할때는 라이브러리를 넣어줘야함
+
+	
+	
+
+}

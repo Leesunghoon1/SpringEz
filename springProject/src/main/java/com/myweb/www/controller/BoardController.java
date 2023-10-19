@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.PagingVO;
+import com.myweb.www.handler.PagingHandler;
 import com.myweb.www.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,17 +45,34 @@ public class BoardController {
 		return "index";
 	}
 	
-	@GetMapping("/list")
-	public String list(Model model, BoardVO bvo) {
-		//items="${list }" 쓰려고 model 객체로 보냄
-		log.info(">>>>>>>> list bvo "+bvo);	
-		List<BoardVO> list = bsv.getList(bvo);
-		
-		model.addAttribute("list", list);
-		log.info(">>>>>>>> list model "+list);
-		return "/board/list"; 
-	}
 	
+	
+	/*
+	 * //board리스트
+	 * 
+	 * @GetMapping("/list") 
+	 * public String list(Model model) {
+	 * items="${list }" 쓰려고 model 객체로 보냄 list는 받을 필요없음
+	 * List<BoardVO> list = model.addAttribute("list", bsv.getList());
+	 * return "/board/list"; }
+	 */
+	
+	
+	@GetMapping("/list")
+	public void list(Model m, PagingVO pagingVO) {
+		//pagingVO 이거는 mapper에 limit을 하기위해 받음 
+		log.info(">>>>> pagingVO" + pagingVO);
+//		m.addAttribute("list", bsv.getList(pagingVO));
+		m.addAttribute("list", bsv.getList(pagingVO));
+		//페이징 처리
+		//총페이지 갯수 (totalCount) (검색포함)
+		int totalCount = bsv.getTotalCount(pagingVO);
+		//뭘 주고 받는다 느낌 ?
+		PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+		m.addAttribute("ph", ph);
+		
+		
+	}
 	
 	
 	
@@ -67,18 +86,22 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(Model model, BoardVO bvo) {
+	public String modify(RedirectAttributes re, BoardVO bvo) {
 		log.info("모디파이 bno 확인" + bvo);
 		int isOK = bsv.postModify(bvo);
-		model.addAttribute("bvo", bvo);
-		
-		return "redirect:/board/detail?bno="+bvo.getBno();
+		re.addAttribute("bno", bvo.getBno());
+		re.addFlashAttribute("isMod", isOK);
+		//flash로 보내면 잠깐 보냈다가 사라지는 역활
+		return "redirect:/board/detail";
 	}
 	
 	@GetMapping("/remove")
 	public String remove(@RequestParam("bno")int bno, RedirectAttributes reAttr) {
+		
 		log.info(">>>> remove bno >>>" + bno);
 		int isOK = bsv.remove(bno);
+		
 		return "redirect:/board/list";	
+		//redirect가 없으면 값을 못찾으니까 redirect를 사용하면 listboardlist를 걸쳐서 간다
 	}
 }

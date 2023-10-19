@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.PagingVO;
 import com.myweb.www.repository.BoardDAO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,11 @@ public class BoardServiceImpl implements BoardService{
 		return bdao.register(bvo);
 	}
 
-	@Override
-	public List<BoardVO> getList(BoardVO bvo) {
-		log.info("list cheack 2");
-		return bdao.getList(bvo);
-	}
+	/*
+	 * @Override public List<BoardVO> getList() { log.info("list cheack 2"); return
+	 * bdao.getList(); }
+	 */
+
 
 	@Override
 	public BoardVO getDetail(int bno) {
@@ -50,6 +51,20 @@ public class BoardServiceImpl implements BoardService{
 		log.info("삭제 체크2");
 		return bdao.remove(bno);
 	}
+
+	@Override
+	public List<BoardVO> getList(PagingVO pagingVO) {
+		log.info("list cheack 2");
+		return bdao.getList(pagingVO);
+	}
+
+	@Override
+	public int getTotalCount(PagingVO pagingVO) {
+
+		return bdao.getTotalCount(pagingVO);
+	}
+	
+
 
 	
 }
