@@ -76,5 +76,6 @@ public class RootConfig {
 		
 		return (SqlSessionFactory)sqlFactoryBean.getObject();
 		
+		
 	}
 }
