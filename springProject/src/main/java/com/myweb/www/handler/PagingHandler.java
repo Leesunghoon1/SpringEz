@@ -1,5 +1,8 @@
 package com.myweb.www.handler;
 
+import java.util.List;
+
+import com.myweb.www.domain.CommentVO;
 import com.myweb.www.domain.PagingVO;
 
 import lombok.Getter;
@@ -28,6 +31,8 @@ public class PagingHandler {
 	private int totalCount;
 	//총 글자수
 	private PagingVO pgvo;
+	
+	private List<CommentVO> cmtList;
 	
 	public PagingHandler(PagingVO pgvo, int totalCount) {
 		//pgvo.qty는 : 한페이지에 보이는 게시글의 수 (10개)
@@ -61,5 +66,9 @@ public class PagingHandler {
 				
 	}
 	
+	public PagingHandler(PagingVO pgvo, int totalCount, List<CommentVO> cmtList) {
+		this(pgvo, totalCount);
+		this.cmtList = cmtList;
+	}
 	
 }

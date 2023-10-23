@@ -17,11 +17,11 @@ public interface BoardService {
 
 	int remove(int bno);
 
-	/* int getTotalCount(); */
+//	int getTotalCount();
 
 	int getTotalCount(PagingVO pagingVO);
 
-	/* List<BoardVO> getList(); */
+	List<BoardVO> getList();
 	
 	
 }

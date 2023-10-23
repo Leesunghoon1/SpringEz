@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="api"/>
+		<item key="selection" value="&gt;&gt;&gt;&gt;&gt; comment List bno"/>
 		<list key="findhistory">
+			<item value="&gt;&gt;&gt;&gt;&gt; comment List bno"/>
 			<item value="api"/>
 		</list>
 		<list key="replacehistory">

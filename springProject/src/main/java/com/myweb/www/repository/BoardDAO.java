@@ -11,8 +11,6 @@ public interface BoardDAO {
 
 	int register(BoardVO bvo);
 
-	/* List<BoardVO> getList(); */
-
 	BoardVO getDetail(int bno);
 
 	int postModify(BoardVO bvo);

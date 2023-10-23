@@ -25,10 +25,15 @@ public class BoardServiceImpl implements BoardService{
 		return bdao.register(bvo);
 	}
 
-	/*
-	 * @Override public List<BoardVO> getList() { log.info("list cheack 2"); return
-	 * bdao.getList(); }
-	 */
+	
+	 @Override 
+	 public List<BoardVO> getList() { 
+		 log.info("list cheack 2"); 
+	 
+	 return bdao.getList(null); 
+	 
+	 }
+	 
 
 
 	@Override
@@ -63,6 +68,8 @@ public class BoardServiceImpl implements BoardService{
 
 		return bdao.getTotalCount(pagingVO);
 	}
+
+
 	
 
 

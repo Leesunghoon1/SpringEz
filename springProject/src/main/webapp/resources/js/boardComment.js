@@ -66,7 +66,7 @@ document.getElementById('cmtPostBtn').addEventListener('click',()=>{
             
             if(result==1) {
                 alert("입력완료");
-                console.log("얜 비엔오" + bnoVal);
+                document.getElementById('cmtText').value='';
                 getCommentList(bnoVal); //댓글 뿌리는애
                 //getCommentList 함수를 호출하여 댓글 목록을 가져오는 것으로 보입니다. 
                 //bnoVal은 게시물 번호를 나타내며, 
@@ -82,9 +82,9 @@ document.getElementById('cmtPostBtn').addEventListener('click',()=>{
 
 
 //서버에 댓글 리스트를 달라 요청 구간 
-async function spreadCommentListFromServer(bno) {
+async function spreadCommentListFromServer(bno, page) {
     try{
-        const resp = await fetch('/comment/'+bno);
+        const resp = await fetch('/comment/'+bno+'/'+page);
         const result = await resp.json();
         return result;
         
@@ -94,28 +94,47 @@ async function spreadCommentListFromServer(bno) {
 }
 
 
-function getCommentList(bno){
-    spreadCommentListFromServer(bno).then(result =>{
+function getCommentList(bno, page=1){
+    //일단 뿌리면 1 페이지 첫페이지를 뿌려라
+    spreadCommentListFromServer(bno, page).then(result =>{
+        console.log(result); //ph 객체 pgvo, totalcount, cmtList
 
 
         let tbody = document.getElementById('cmtArea');
-        if(result.length > 0) {
+        if(result.cmtList.length > 0) {
 
-            tbody.innerHTML="";
-            for(let i = 0; i < result.length; i++) {
+            if(page == 1) {
+                //1페이지 일때만 
+                tbody.innerHTML="";
+            }
+
+            for(let i = 0; i < result.cmtList.length; i++) {
 
                 
-                let str = `<tr data-cno="${result[i].cno}">`
-                str += `<td >${result[i].cno}</td>`
-                str += `<td>${result[i].wrtier}</td>`
-                str += `<td>${result[i].content}</td>`
-                str += `<td>${result[i].modAt}</td>`
-                str += `<td><button type="button" class="modBtn" data-bs-toggle="modal" data-bs-target="#myModal">>%</button></td>`
+                let str = `<tr data-cno="${result.cmtList[i].cno}" data-content="${result.cmtList[i].content}" >`;
+                str += `<td>${result.cmtList[i].cno}</td>`
+                str += `<td>${result.cmtList[i].wrtier}</td>`
+                str += `<td>${result.cmtList[i].content}</td>`
+                str += `<td>${result.cmtList[i].modAt}</td>`
+                str += `<td><button type="button" class="modBtn" data-bs-toggle="modal" data-bs-target="#myModal">%</button></td>`
                 str += `<td><button type="button" class="delBtn">x</button></td>`
                 str += `</tr>`
 
                 tbody.innerHTML+= str;
             }
+
+            //댓글 페이징 코드
+            let moreBtn = document.getElementById('moreBtn');
+            console.log(moreBtn);
+            //db에서 pgvo + list 같이 가져와야 값을 줄 수 있음.
+            if(result.pgvo.pageNo < result.endPage || result.next) {
+                //다음페이지가 있는지 없는지 확인
+                moreBtn.style.visibility = 'visible';
+                moreBtn.dataset.page = page + 1;
+            }else{
+                moreBtn.style.visibility = 'hidden';
+            }
+
         }
         else{
             let td = `<td>CommentListEmpty</td>`
@@ -144,6 +163,7 @@ document.addEventListener('click', (e)=>{
     if(e.target.classList.contains('delBtn')) {
         
         let tr = e.target.closest('tr')
+
         let conVal = tr.dataset.cno;
 
         removeCommentToServer(conVal).then(result =>{
@@ -152,7 +172,57 @@ document.addEventListener('click', (e)=>{
             }
             getCommentList(bnoVal);
         })
+    }else if(e.target.classList.contains('modBtn')) {
+
+        let tr = e.target.closest('tr');
+
+        let cmtText = tr.dataset.content;
+        //nextSibling() : 같은 부모의 다음 형제 (즉 밑에 있는 객체를 반환)
+        console.log(cmtText);
+        document.getElementById('cmtTextMod').value = cmtText;
+        //기존내용 모달창에 반영 (수정하기 편하게...)
+        //cmttext에 선택한 벨류를 넣기
+        
+        document.getElementById('cmtModBtn').setAttribute('data-cno', tr.dataset.cno);
+        //cmtModBtn에 data-cno 달고 가기
+        //왜냐면 cno 버튼을 쓰려고
+
+    }else if(e.target.id == 'cmtModBtn') {
+        let cmtDataMod={
+            cno : e.target.dataset.cno,
+            content : document.getElementById('cmtTextMod').value
+        };
+        console.log(cmtDataMod);
+        editCommenntTosever(cmtDataMod).then(result=>{
+            if(parseInt(result)){
+                //모달창 닫기
+                
+
+                getCommentList(bnoVal);
+                document.querySelector('.btn-close').click();
+            }
+        })
+    }else if(e.target.id == 'moreBtn') {
+        getCommentList(bnoVal, parseInt(e.target.dataset.page));
+    }
+})
+
+async function editCommenntTosever(cmtDataMod) {
+    try {
+        const url = '/comment/'+cmtDataMod.cno;
+        const config = {
+            method: 'put',
+            headers: {
+                'Content-Type' : 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(cmtDataMod)
+        };
+        const resp = await fetch(url, config);
+        const result = await resp.text();
+        return result;
+
+    } catch (error) {
+        console.log(error);
     }
 
-
-})
+}
