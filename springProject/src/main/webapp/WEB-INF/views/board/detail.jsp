@@ -75,6 +75,15 @@
     </tbody>
 </table>
 </div>
+<!-- file 표현 영역 -->
+<c:forEach>
+
+</c:forEach>
+
+
+
+
+
 
 <!-- 댓글 페이징 라인 -->
 <div>
