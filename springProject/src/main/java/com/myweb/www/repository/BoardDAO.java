@@ -11,13 +11,13 @@ public interface BoardDAO {
 
 	int register(BoardVO bvo);
 
-	BoardVO getDetail(int bno);
+	BoardVO getDetail(long bno);
 
 	int postModify(BoardVO bvo);
 
-	int remove(int bno);
+	int remove(long bno);
 
-	void readcount(@Param("bno")int bno, @Param("cnt")int cnt);
+	void readcount(@Param("bno")long bno, @Param("cnt")int cnt);
 	//받는게 두개면 parm 으로 들고가야한다
 	
 	List<BoardVO> getList(PagingVO pagingVO);
@@ -25,4 +25,6 @@ public interface BoardDAO {
 	int getTotalCount(PagingVO pagingVO);
 
 	long selectOneBno();
+
+	//int update(BoardVO bvo);
 }

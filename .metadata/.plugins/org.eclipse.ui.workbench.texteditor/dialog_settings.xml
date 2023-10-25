@@ -6,8 +6,15 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="&gt;&gt;&gt;&gt;&gt; comment List bno"/>
+		<item key="selection" value=""/>
 		<list key="findhistory">
+			<item value="디테일에서"/>
+			<item value="디테일"/>
+			<item value="uuid 들어옴 ?"/>
+			<item value="uuid"/>
+			<item value="isOK"/>
+			<item value=""/>
+			<item value="\"/>
 			<item value="&gt;&gt;&gt;&gt;&gt; comment List bno"/>
 			<item value="api"/>
 		</list>

@@ -30,18 +30,18 @@ public class BoardServiceImpl implements BoardService{
 	 * return bdao.register(bvo); }
 	 */
 	
-	 @Override 
-	 public List<BoardVO> getList() { 
-		 log.info("list cheack 2"); 
-	 
-	 return bdao.getList(null); 
-	 
-	 }
+//	 @Override 
+//	 public List<BoardVO> getList() { 
+//		 log.info("list cheack 2"); 
+//	 
+//	 return bdao.getList(null); 
+//	 
+//	 }
 	 
 
 
 	@Override
-	public BoardVO getDetail(int bno) {
+	public BoardVO getDetail(long bno) {
 		log.info("디테일 체크 2");
 		
 		int cnt = 1;
@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int remove(int bno) {
+	public int remove(long bno) {
 		log.info("삭제 체크2");
 		return bdao.remove(bno);
 	}
@@ -95,9 +95,55 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public List<FileVO> FileList(int bno) {
+	public List<FileVO> FileList(long bno) {
 		// TODO Auto-generated method stub
 		return fdao.getFileList(bno);
+	}
+
+
+
+	@Override
+	public List<FileVO> getFileList(long bno) {
+		/* bdao.readcount(bno, 1); */
+		/* BoardDTO bdto = new BoardDTO(); */
+		/* bdto.setBvo(bdao.getDetail(bno)); */
+		// // bdao bvo 호출
+		
+		return fdao.getFileList(bno);
+		
+		
+	}
+
+
+
+	@Override
+	public int dele(String fno) {
+		// TODO Auto-generated method stub
+		return fdao.fileDel(fno);
+	}
+
+
+
+	@Override
+	public int FileModify(BoardDTO bdto) {
+		bdao.readcount(bdto.getBvo().getBno(), -2);
+		
+		int isOK = bdao.postModify(bdto.getBvo());
+		
+		if(bdto.getFlist() == null) {
+			isOK *= 1;
+		}else {
+			if(isOK > 0 && bdto.getFlist().size()>0) {
+				long bno = bdto.getBvo().getBno();
+				//모든 fvo에 bno set
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isOK *= fdao.insertFile(fvo);
+				}
+			}
+		
+		}
+		return isOK;
 	}
 
 

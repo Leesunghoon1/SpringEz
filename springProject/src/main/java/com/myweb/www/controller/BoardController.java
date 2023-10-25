@@ -5,10 +5,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +67,7 @@ public class BoardController {
 		int isOK = bsv.register(new BoardDTO(bvo, flist));
 		
 		log.info(">>>> board register >>"+(isOK>0? "ok" : "fail"));
+		
 		return "index";
 	}
 	
@@ -97,34 +102,64 @@ public class BoardController {
 	
 	
 	@GetMapping({"/detail", "/modify"})
-	public void detail(Model model, @RequestParam("bno")int bno) {
+	public void detail(@RequestParam("bno")long bno, Model model) {
 		log.info("디테일 bno확인 " + bno);
-		BoardVO bvo = bsv.getDetail(bno);
-		log.info("디테일 확인 bvo" + bvo);
-		model.addAttribute("bvo", bvo);
-		
-		List<FileVO> flist = bsv.FileList(bno);
-		model.addAttribute("flist", flist);
-		
+		/*
+		 * BoardVO bvo = bsv.getDetail(bno); log.info("디테일 확인 bvo" + bvo);
+		 */
+		/* model.addAttribute("bvo", bvo); */
+		BoardDTO bdto = new BoardDTO(bsv.getDetail(bno), bsv.getFileList(bno));
+		log.info("디테일에서 bdto:"+bdto);
+		model.addAttribute("bdto", bdto);
 	}
 	
 	@PostMapping("/modify")
-	public String modify(RedirectAttributes re, BoardVO bvo) {
+	public String modify(RedirectAttributes re, BoardVO bvo,
+			@RequestParam(name="files", required = false)MultipartFile[] files) {
 		log.info("모디파이 bno 확인" + bvo);
-		int isOK = bsv.postModify(bvo);
-		re.addAttribute("bno", bvo.getBno());
-		re.addFlashAttribute("isMod", isOK);
+		
+		List<FileVO> flist = new ArrayList<FileVO>();
+		
+		if(files[0].getSize() > 0) {
+			// file이 존재함 기본 파일은 이미 DB에 등록완료. 삭제할 파일은 비동기로 이미
+			// 삭제 완료. 새로 추가할 파일만 추가
+			//file이 존재함
+			
+			flist = fh.uploadFiles(files);
+//			bvo.setReadCount(flist.size());
+			
+		}
+		
+		BoardDTO bdto = new BoardDTO(bvo, flist);
+		
+		int isOK = bsv.FileModify(bdto);
+		
+//		re.addAttribute("bno", bvo.getBno());
+//		re.addFlashAttribute("isMod", isOK);
 		//flash로 보내면 잠깐 보냈다가 사라지는 역활
-		return "redirect:/board/detail";
+		
+		return "redirect:/board/detail"+bvo.getBno();
 	}
 	
 	@GetMapping("/remove")
-	public String remove(@RequestParam("bno")int bno, RedirectAttributes reAttr) {
+	public String remove(@RequestParam("bno")long bno, RedirectAttributes reAttr) {
 		
 		log.info(">>>> remove bno >>>" + bno);
 		int isOK = bsv.remove(bno);
-		
+		log.info("isOK >>>" + isOK );
 		return "redirect:/board/list";	
 		//redirect가 없으면 값을 못찾으니까 redirect를 사용하면 listboardlist를 걸쳐서 간다
+	}
+	
+	
+	
+	@DeleteMapping(value="/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> dele(@PathVariable("uuid")String fno) {
+		log.info("uuid 들어옴 ?" + fno);
+		
+		int isOK = bsv.dele(fno);
+		log.info("isOK >>>" + isOK );
+		return isOK > 0 ? new ResponseEntity<String>("1", HttpStatus.OK)
+				: new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

@@ -13,19 +13,25 @@ public interface BoardService {
 
 	List<BoardVO> getList(PagingVO pagingVO);
 
-	BoardVO getDetail(int bno);
+	BoardVO getDetail(long bno);
 
 	int postModify(BoardVO bvo);
 
-	int remove(int bno);
+	int remove(long bno);
 
 //	int getTotalCount();
 
 	int getTotalCount(PagingVO pagingVO);
 
-	List<BoardVO> getList();
+//	List<BoardVO> getList();
 
-	List<FileVO> FileList(int bno);
+	List<FileVO> FileList(long bno);
+
+	List<FileVO> getFileList(long bno);
+
+	int dele(String fno);
+
+	int FileModify(BoardDTO bdto);
 	
 	
 }

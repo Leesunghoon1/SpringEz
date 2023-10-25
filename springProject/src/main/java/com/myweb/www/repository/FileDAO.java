@@ -9,6 +9,10 @@ public interface FileDAO {
 
 	int insertFile(FileVO fvo);
 
-	List<FileVO> getFileList(int bno);
+	List<FileVO> getFileList(long bno);
+
+	int fileDel(String fno);
+
+	int FileModify(BoardDTO bdto);
 
 }

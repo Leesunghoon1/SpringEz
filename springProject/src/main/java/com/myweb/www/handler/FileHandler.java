@@ -117,5 +117,7 @@ public class FileHandler {
 		return mimeType.startsWith("image")? true : false;
 		//image//jpg (앞쪽에 타입을 뜯어와서 해당 타입의 첫번째 함수가 맞는지 확인 맞으면 true 틀리면 false
 	}
+
+
 	
 }

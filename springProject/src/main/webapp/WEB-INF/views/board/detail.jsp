@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+              <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+           
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +15,11 @@
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/nav.jsp"/>
 <body>
+<c:set value="${bdto.bvo}" var="bvo"></c:set>
 
 <h1>확인 페이지</h1>
 <table border="1">
+<!--value="${bdto.bvo }" 를 bvo 이름으로 쓰겠다고 선언함 c:set  -->
 	<tr>
 		<th>BNO</th>
 		<td>${bvo.bno }</td>
@@ -75,14 +79,37 @@
     </tbody>
 </table>
 </div>
-<!-- file 표현 영역 -->
-<c:forEach>
+	<!-- file 표현 영역 -->
 
-</c:forEach>
+<div>
+	<ul>
+		<!-- 파일 개수만큼 li를 추가하여 파일을 표시 타입이 1일경우만 표시 -->	
+		<!-- li
+		     div => img 그림표시
+		     div => div 파일이름, 작성일자 span 크기 설정
+		-->	
+		<!-- 하나의 파일로 생성 -->
+		<c:forEach items="${bdto.flist }" var="fvo">
+					<li>
+					<!-- /upload/year/month/dat/uuid_th_filename -->
+						<img alt="fffff" src="/upload/${fn: replace(fvo.saveDir, '\\', '/')}/${fvo.uuid}_th_${fvo.fileName}">
+					<div>
+				<!-- 파일모양 아이콘 같은걸 넣을수있음-->
+				
+				<div>${fvo.fileName }
+		
+				</div>
+				
+				${fvo.regAt}
+			</div>
+			<span>${fvo.fileSize }Byte</span>
+		</li>
+		
+		</c:forEach>
+	</ul>
+	
 
-
-
-
+</div>
 
 
 <!-- 댓글 페이징 라인 -->
@@ -123,9 +150,8 @@ let bnoVal=`<c:out value='${bvo.bno}'/>`;
 console.log(bnoVal);
 </script>
 
-	<script type="text/javascript" src="/resources/js/boardComment.js">
-	
-	</script>
+
+	<script type="text/javascript" src="/resources/js/boardComment.js"></script>
 	<script type="text/javascript">
 	getCommentList(bnoVal);
 	</script>
