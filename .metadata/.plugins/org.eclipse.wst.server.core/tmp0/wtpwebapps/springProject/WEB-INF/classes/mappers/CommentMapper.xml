@@ -26,6 +26,10 @@
   		delete from comment where cno = #{cno} 
   	</delete>
   	
+  	<delete id="removeC">
+  		delete from comment where bno = #{bno}
+  	</delete>
+  	
   	
   	
   	<update id="edit">

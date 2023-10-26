@@ -59,6 +59,8 @@
 <td>${bvo.writer }</td>
 <td>${bvo.modAt }</td>
 <td>${bvo.readCount }</td>
+<td>${bvo.cmtQty }</td>
+<td>${bvo.hasFile }</td>
 </tr>
 </c:forEach>
 </tbody>

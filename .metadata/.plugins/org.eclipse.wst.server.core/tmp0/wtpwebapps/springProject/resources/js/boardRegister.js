@@ -6,11 +6,11 @@ document.getElementById('trigger').addEventListener('click',()=>{
 });
 
 //실행파일, 이미지 파일에 대한 정규표현식 작성
-const regExp=new RegExp("\.(exe|sh|bat|js|msi|dll)$"); //실행 파일 막기
+const regExp=new RegExp("\.(txt|exe|sh|bat|js|msi|dll)$"); //실행 파일 막기
 const regExpImg=new RegExp("\.(jpg|jpeg|png|gif)"); //허용할 이미지 파일
 const maxSize = 1024*1024*20; //파일 최대 크기
 
-function fileValidation(fileName,fileSize)
+function fileValidation(fileName, fileSize)
 {
     if(!regExpImg.test(fileName))
         return 0;
@@ -20,13 +20,13 @@ function fileValidation(fileName,fileSize)
         return 0;
     else
         return 1;
-
+    
 }
 
 //객체에 변화가 생겼을때
 document.addEventListener('change',(e)=>{
     if(e.target.id=='files'){
-        document.getElementById('regBtn').diabled=false;    //변화가 생길때마다 disabled 옵션을 false로 초기화
+        document.getElementById('regBtn').disabled=false;    //변화가 생길때마다 disabled 옵션을 false로 초기화
         //input file element에 저장된 file의 정보를 가져오는 property
         const fileObj = document.getElementById('files').files;
         console.log(fileObj);
@@ -42,7 +42,7 @@ document.addEventListener('change',(e)=>{
         let ul=`<ul class="list-group list-group-flush">`;
         for(let file of fileObj)
         {
-            let validResult=fileValidation(file.name,file.size); //0또는 1
+            let validResult=fileValidation(file.name, file.size); //0또는 1
             isOk*=validResult;
             ul+=`<li class="list-group-item">`;
             ul+=`<div class="mb-3">`;
@@ -54,7 +54,7 @@ document.addEventListener('change',(e)=>{
         div.innerHTML=ul;
 
         if(isOk==0){
-            document.getElementById('regBtn').diabled=true;
+            document.getElementById('regBtn').disabled=true;
         }
     }
 })

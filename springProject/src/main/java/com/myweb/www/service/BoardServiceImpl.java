@@ -5,12 +5,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.myweb.www.domain.BoardDTO;
 import com.myweb.www.domain.BoardVO;
 import com.myweb.www.domain.FileVO;
 import com.myweb.www.domain.PagingVO;
 import com.myweb.www.repository.BoardDAO;
+import com.myweb.www.repository.CommentDAO;
 import com.myweb.www.repository.FileDAO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,11 @@ public class BoardServiceImpl implements BoardService{
 	private BoardDAO bdao;
 	
 	@Inject
-	private FileDAO fdao;
+	private FileDAO fdao; 
+	
+	@Inject
+	private CommentDAO cdao;
+	
 
 	/*
 	 * @Override public int register(BoardVO bvo) { log.info("register chaeak 2");
@@ -40,6 +46,7 @@ public class BoardServiceImpl implements BoardService{
 	 
 
 
+
 	@Override
 	public BoardVO getDetail(long bno) {
 		log.info("디테일 체크 2");
@@ -54,10 +61,13 @@ public class BoardServiceImpl implements BoardService{
 		log.info("모디파이 체크 2");
 		return bdao.postModify(bvo);
 	}
-
+	
+	@Transactional
 	@Override
 	public int remove(long bno) {
 		log.info("삭제 체크2");
+		cdao.removeC(bno);
+		fdao.removeF(bno);
 		return bdao.remove(bno);
 	}
 
@@ -73,7 +83,7 @@ public class BoardServiceImpl implements BoardService{
 		return bdao.getTotalCount(pagingVO);
 	}
 
-
+	@Transactional
 	@Override
 	public int register(BoardDTO bdto) {
 		// bvo, flist 가져와서 각자 db에 저장
@@ -111,7 +121,6 @@ public class BoardServiceImpl implements BoardService{
 		
 		return fdao.getFileList(bno);
 		
-		
 	}
 
 
@@ -122,8 +131,7 @@ public class BoardServiceImpl implements BoardService{
 		return fdao.fileDel(fno);
 	}
 
-
-
+	@Transactional
 	@Override
 	public int FileModify(BoardDTO bdto) {
 		bdao.readcount(bdto.getBvo().getBno(), -2);

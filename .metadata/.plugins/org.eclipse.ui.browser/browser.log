@@ -1,0 +1,26 @@
+
+10월 26, 2023 15:54:58.93 NEW SESSION
+10월 26, 2023 15:54:58.93 [10880:7696:1026/155458.092:ERROR:cert_issuer_source_aia.cc(36)] Error parsing cert retrieved from AIA (as DER):
+10월 26, 2023 15:54:58.93 ERROR: Couldn't read tbsCertificate as SEQUENCE
+10월 26, 2023 15:54:58.93 ERROR: Failed parsing Certificate
+10월 26, 2023 15:54:58.93 
+10월 26, 2023 15:54:58.275 [10880:7696:1026/155458.275:ERROR:cert_verify_proc_builtin.cc(701)] CertVerifyProcBuiltin for sync.adotmob.com failed:
+10월 26, 2023 15:54:58.276 ----- Certificate i=0 (CN=sync.adotmob.com) -----
+10월 26, 2023 15:54:58.276 ERROR: Time is after notAfter
+10월 26, 2023 15:54:58.276 
+10월 26, 2023 15:54:58.276 
+10월 26, 2023 15:57:57.04 [10880:7696:1026/155757.004:ERROR:cert_verify_proc_builtin.cc(701)] CertVerifyProcBuiltin for cookie-sync.api.soundcast.fm failed:
+10월 26, 2023 15:57:57.05 ----- Certificate i=0 (CN=*.api.soundcast.fm) -----
+10월 26, 2023 15:57:57.05 ERROR: Time is after notAfter
+10월 26, 2023 15:57:57.05 
+10월 26, 2023 15:57:57.05 
+10월 26, 2023 18:03:23.129 [10880:7012:1026/180323.129:ERROR:cert_issuer_source_aia.cc(36)] Error parsing cert retrieved from AIA (as DER):
+10월 26, 2023 18:03:23.129 ERROR: Couldn't read tbsCertificate as SEQUENCE
+10월 26, 2023 18:03:23.129 ERROR: Failed parsing Certificate
+10월 26, 2023 18:03:23.129 
+10월 26, 2023 18:03:23.307 [10880:7012:1026/180323.306:ERROR:cert_verify_proc_builtin.cc(701)] CertVerifyProcBuiltin for sync.adotmob.com failed:
+10월 26, 2023 18:03:23.307 ----- Certificate i=0 (CN=sync.adotmob.com) -----
+10월 26, 2023 18:03:23.307 ERROR: Time is after notAfter
+10월 26, 2023 18:03:23.307 
+10월 26, 2023 18:03:23.307 
+10월 26, 2023 21:16:47.903 [4532:14016:1026/211647.903:ERROR:interface_endpoint_client.cc(702)] Message 1 rejected by interface blink.mojom.WidgetHost

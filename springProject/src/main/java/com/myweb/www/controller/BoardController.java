@@ -26,6 +26,7 @@ import com.myweb.www.domain.PagingVO;
 import com.myweb.www.handler.FileHandler;
 import com.myweb.www.handler.PagingHandler;
 import com.myweb.www.service.BoardService;
+import com.myweb.www.service.CommentService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +44,10 @@ public class BoardController {
 	
 	@Inject 
 	private FileHandler fh;
+	
+	@Inject
+	private CommentService csv;
+	
 	
 	@GetMapping("/register")
 	public String boardregisterGet() {
@@ -102,20 +107,19 @@ public class BoardController {
 	
 	
 	@GetMapping({"/detail", "/modify"})
-	public void detail(@RequestParam("bno")long bno, Model model) {
+	public void detail(Model model, @RequestParam("bno")long bno) {
 		log.info("디테일 bno확인 " + bno);
 		/*
 		 * BoardVO bvo = bsv.getDetail(bno); log.info("디테일 확인 bvo" + bvo);
 		 */
 		/* model.addAttribute("bvo", bvo); */
 		BoardDTO bdto = new BoardDTO(bsv.getDetail(bno), bsv.getFileList(bno));
-		log.info("디테일에서 bdto:"+bdto);
 		model.addAttribute("bdto", bdto);
 	}
 	
+	
 	@PostMapping("/modify")
-	public String modify(RedirectAttributes re, BoardVO bvo,
-			@RequestParam(name="files", required = false)MultipartFile[] files) {
+	public String modify(RedirectAttributes re, BoardVO bvo, @RequestParam(name="files", required = false)MultipartFile[] files) {
 		log.info("모디파이 bno 확인" + bvo);
 		
 		List<FileVO> flist = new ArrayList<FileVO>();
@@ -126,27 +130,24 @@ public class BoardController {
 			//file이 존재함
 			
 			flist = fh.uploadFiles(files);
-//			bvo.setReadCount(flist.size());
-			
+	
 		}
 		
 		BoardDTO bdto = new BoardDTO(bvo, flist);
 		
 		int isOK = bsv.FileModify(bdto);
 		
-//		re.addAttribute("bno", bvo.getBno());
-//		re.addFlashAttribute("isMod", isOK);
-		//flash로 보내면 잠깐 보냈다가 사라지는 역활
 		
-		return "redirect:/board/detail"+bvo.getBno();
+		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
 	
 	@GetMapping("/remove")
-	public String remove(@RequestParam("bno")long bno, RedirectAttributes reAttr) {
+	public String remove(@RequestParam("bno")long bno) {
 		
 		log.info(">>>> remove bno >>>" + bno);
 		int isOK = bsv.remove(bno);
-		log.info("isOK >>>" + isOK );
+		
+		
 		return "redirect:/board/list";	
 		//redirect가 없으면 값을 못찾으니까 redirect를 사용하면 listboardlist를 걸쳐서 간다
 	}

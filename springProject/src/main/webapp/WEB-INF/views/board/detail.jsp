@@ -89,7 +89,7 @@
 		     div => div 파일이름, 작성일자 span 크기 설정
 		-->	
 		<!-- 하나의 파일로 생성 -->
-		<c:forEach items="${bdto.flist }" var="fvo">
+		<c:forEach items="${bdto.flist}" var="fvo">
 					<li>
 					<!-- /upload/year/month/dat/uuid_th_filename -->
 						<img alt="fffff" src="/upload/${fn: replace(fvo.saveDir, '\\', '/')}/${fvo.uuid}_th_${fvo.fileName}">

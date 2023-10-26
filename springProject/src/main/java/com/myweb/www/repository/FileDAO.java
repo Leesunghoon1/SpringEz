@@ -15,4 +15,8 @@ public interface FileDAO {
 
 	int FileModify(BoardDTO bdto);
 
+	void removeF(long bno);
+
+	List<FileVO> selectListAllFiles();
+
 }
