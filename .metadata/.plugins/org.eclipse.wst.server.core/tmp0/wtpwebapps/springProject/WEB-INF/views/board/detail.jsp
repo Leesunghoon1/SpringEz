@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
               <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+                  <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
            
 <!DOCTYPE html>
 <html>
@@ -54,13 +55,19 @@
 <!-- 댓글라인  -->
 <!-- 댓글라인 -->
 <div>
-   <!-- 댓글 등록 라인 -->
+<sec:authorize access="isAuthenticated()">
+<!-- 권한 있을때 안쪽 테그라인 사용 -->
+<sec:authentication property="principal.mvo.email" var="authEmail"/>
    <div class="input-group mb-3">
-     <span class="input-group-text" id="cmtWriter">Writer</span>
+   <c:if test="${authEmail ne null }" >
+     <span class="input-group-text" id="cmtWriter">${authEmail }</span>
+	</c:if>
      <input type="text" class="form-control" placeholder="Comment Content" id="cmtText">
+     
      <button class="btn btn-primary" type="button" id="cmtPostBtn">POST</button>
+     
    </div>
-   
+</sec:authorize>
    <!-- 댓글 표시 라인 -->
 <table class="table">
     <tr>
@@ -79,6 +86,7 @@
     </tbody>
 </table>
 </div>
+
 	<!-- file 표현 영역 -->
 
 <div>
@@ -111,6 +119,7 @@
 
 </div>
 
+	
 
 <!-- 댓글 페이징 라인 -->
 <div>
@@ -143,7 +152,7 @@
       </div>
    </div>
 
-	
+
 <script >
 let bnoVal=`<c:out value='${bvo.bno}'/>`;
 

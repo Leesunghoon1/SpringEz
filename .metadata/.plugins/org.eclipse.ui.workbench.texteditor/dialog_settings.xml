@@ -6,8 +6,16 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=""/>
+		<item key="selection" value="errMsg"/>
 		<list key="findhistory">
+			<item value="errMsg"/>
+			<item value="userDetail123123"/>
+			<item value="userDetail"/>
+			<item value="userDetail111"/>
+			<item value="loginsuccess"/>
+			<item value="loginses"/>
+			<item value="LoginS"/>
+			<item value="Login"/>
 			<item value="@PostMappin"/>
 			<item value="@GetMapping"/>
 			<item value="144"/>
@@ -15,14 +23,6 @@
 			<item value="234234"/>
 			<item value="234"/>
 			<item value="23"/>
-			<item value="sec"/>
-			<item value="seq"/>
-			<item value="&gt;&gt;&gt;&gt;&gt;&gt; delete File &gt; {}"/>
-			<item value="aspect"/>
-			<item value="Aspe"/>
-			<item value="Aspa"/>
-			<item value="디테일에서"/>
-			<item value="디테일"/>
 		</list>
 		<list key="replacehistory">
 		</list>

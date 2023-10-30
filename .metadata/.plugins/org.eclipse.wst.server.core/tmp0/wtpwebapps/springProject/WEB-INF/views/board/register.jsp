@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,22 +12,27 @@
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/nav.jsp"/>
 
+<sec:authentication property="principal.mvo.email" var="authEmail"/>
+
+
+
+
 <form action="/board/register" method="post" enctype="multipart/form-data">
 
 <div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">제목</label>
-  <input type="text" class="form-control" name="title" id="exampleFormControlInput1" placeholder="제목">
+  <label for="t" class="form-label">제목</label>
+  <input type="text" class="form-control" name="title" id="t" placeholder="제목">
 </div>
 
 <div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">작성자</label>
-  <input type="text" class="form-control" name="writer" id="exampleFormControlInput1" placeholder="작성자">
+  <label for="w" class="form-label">작성자</label>
+  <input type="text" class="form-control" name="writer" id="w" placeholder="Email">
 </div>
 
 
 <div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">내용</label>
-  <input type="text" class="form-control" name="content" id="exampleFormControlInput1" placeholder="내용">
+  <label for="c" class="form-label">내용</label>
+  <input type="text" class="form-control" name="content" id="c" placeholder="내용">
 </div>
 
 <div class="mb-3">

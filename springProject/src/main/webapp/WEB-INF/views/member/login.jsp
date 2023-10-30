@@ -11,11 +11,25 @@
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/nav.jsp"/>
 
+
 <form action="/member/login" method="post">
-email : <input type="email" name="id" placeholder="아이디 입력">
-Password : <input type="password" name="pw" placeholder="비밀번호 입력">
+email : <input type="email" name="email" placeholder="아이디 입력">
+Password : <input type="password" name="pwd" placeholder="비밀번호 입력">
 <br>
+<c:if test="${not empty param.errMsg }">
+	<div class="text-danger mb-3">
+		<c:choose>
+			<c:when test="${param.errMsg eq 'Bad credentials' }">
+				<c:set var="errText" value="Email & 비밀번호가 일치하지 않습니다."/>
+			</c:when>
+			<c:otherwise>
+				<c:set var="errText" value="관리자에게 문의해주세요"/>		
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>
 <button type="submit">log in</button>
+${errText }
 </form>
 
 
