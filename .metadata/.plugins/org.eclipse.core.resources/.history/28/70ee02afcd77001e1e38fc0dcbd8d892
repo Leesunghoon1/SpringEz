@@ -1,0 +1,11 @@
+package com.myweb.www.repository;
+
+import java.util.List;
+
+import com.myweb.www.security.MemberVO;
+
+public interface AuthDAO {
+
+	List<MemberVO> MomberList(MemberVO mvo);
+
+}

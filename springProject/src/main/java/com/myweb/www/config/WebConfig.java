@@ -41,7 +41,8 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 		// 그외 기타 등등 사용자 설정
 		// 사용자 지정 익셉션 설정을 할 것인지 처리|
-		registration.setInitParameter("throwExceptionIfNotHandlerFound", "true"); // (사용자 지정 핸들러 찾아라) 설정
+		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true"); 
+		// (사용자 지정 핸들러 찾아라) 설정 내 404에러 익색셥으로 가라 설정 
 		
 		//파일 업로드 설정
 		//경로, maxFileSize, maxReqSize, fileSizeThreshold

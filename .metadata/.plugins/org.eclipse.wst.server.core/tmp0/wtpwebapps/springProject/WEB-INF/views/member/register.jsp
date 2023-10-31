@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/nav.jsp"/>
-
+<h1>member legister</h1>
 <!-- email, pwd, nik_name -->
 <div class="container">
 

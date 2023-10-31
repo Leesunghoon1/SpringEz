@@ -46,11 +46,18 @@
         	<li class="nav-item">
         	<a class="nav-link" href="/member/list">ADMIN > ${authNick }(${authEmail })</a>
         	</li>
+        		<li class="nav-item">
+        	<a class="nav-link" href="/member/detail?email=${authEmail }">${authNick }(${authEmail })</a>
+        	</li>
+        			<li class="nav-item">
+        	<a class="nav-link" href="/member/modify?email=${authEmail }">수정</a>
+        	</li>
+        				
         	</c:when>
         	<c:otherwise>
         	<!-- admin 계정만 할 수 있는 일을 처리 -->
         	<li class="nav-item">
-        	<a class="nav-link" href="/detail?email=${authEmail }">${authNick }(${authEmail })</a>
+        	<a class="nav-link" href="/member/detail?email=${authEmail }">${authNick }(${authEmail })</a>
         	</li>
     
         	</c:otherwise>
@@ -59,18 +66,18 @@
         
         
         <!-- 로그인을 해야 open 되는 메뉴들 ... -->
-        
-	        <li class="nav-item">
-	          <a class="nav-link" href="/board/register">Board Reg</a>
-	        </li>
-        <li class="nav-item">
-		          <a class="nav-link" href="/member/logout" id="logoutLink">log Out</a>
-        </li>
-	        <form action="/member/logout" method="post" id="logoutForm">
-		        <input type="hidden" name="email" value="${authEmail }">
-		        
-	        </form>        
-        </sec:authorize>
+
+							<li class="nav-item"><a class="nav-link"
+								href="/board/register">Board Reg</a>
+								</li>
+							<li class="nav-item"><a class="nav-link"
+								href="/member/logout" id="logoutLink">log Out</a>
+								</li>
+							<form action="/member/logout" method="post" id="logoutForm">
+								<input type="hidden" name="email" value="${authEmail }">
+								
+							</form>
+						</sec:authorize>
         <!--아직 로그인 전 상태에서 open 되어야 할 메뉴  -->
         <sec:authorize access="isAnonymous()">
         <li class="nav-item">

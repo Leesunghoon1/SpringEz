@@ -1,18 +1,25 @@
 package com.myweb.www.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.myweb.www.domain.PagingVO;
-import com.myweb.www.handler.PagingHandler;
+import com.myweb.www.security.AuthVO;
 import com.myweb.www.security.MemberVO;
 import com.myweb.www.service.MemberService;
 
@@ -29,6 +36,7 @@ public class MemberController {
    
    @Inject
    private MemberService msv;
+   
    
    @GetMapping("/register")
    public void register() {
@@ -55,14 +63,44 @@ public class MemberController {
 	   return "redirect:/member/login";
    }
    
-   @GetMapping("/list")
-	public void list(Model m, MemberVO mvo) {
-		//pagingVO 이거는 mapper에 limit을 하기위해 받음 
-		log.info(">>>>> MemverVO" + mvo);
-		m.addAttribute("list", mvo.memberList(mvo));
+   @GetMapping({"/detail", "modify"})
+	public String detial(Model m, @RequestParam("email")String email) {
+		log.info(">>>>> MemverVO" + email);
+		MemberVO mvo = msv.MemberDetail(email);
 		
+		m.addAttribute("mvo", mvo);
+		return "/member/modify";
 	}
-	
+   
+   @PostMapping("/modify")
+   public String modify(MemberVO mvo, HttpServletRequest request, HttpServletResponse response) {
+	   log.info("email >>>> " + mvo);
+	   mvo.setPwd(bcEncoder.encode(mvo.getPwd())); //암호화해서 넣음
+	   int isOK = msv.MemberModify(mvo);
+		logout(request, response);
+	   
+	   return "index";
+   }
    
    
+   @GetMapping("/list")
+   public void list(Model m) {
+	   
+	   List<AuthVO> Mlist = msv.MeberList();
+	   m.addAttribute("Mlist", Mlist);
+	   
+   }
+   
+   @GetMapping("/remove")
+   public String remove(@RequestParam("email")String email, HttpServletRequest request, HttpServletResponse response) {
+	   log.info(">>>> remove email >>>" + email);
+		int isOK = msv.remove(email);
+		logout(request, response);
+		return "index";	
+   }
+   private void logout(HttpServletRequest request, HttpServletResponse response) {
+	      //사용자 정보를 찾는 인자 ?
+	      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	      new SecurityContextLogoutHandler().logout(request, response, auth);
+	   }
 }

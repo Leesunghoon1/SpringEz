@@ -14,16 +14,16 @@
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 <body>
-<h1>Board Detail Page</h1>
+<h1>Member Detail Page</h1>
 
 
 
 
 <table border="1">
-<c:forEach items="${list}" var="mvo">
+
 	<tr>
 		<th>EMAIL</th>
-		<td>${mvo.Email }</td>
+		<td>${mvo.email }</td>
 	</tr>
 	<tr>
 		<th>PWD</th>
@@ -31,14 +31,18 @@
 	</tr>
 	<tr>
 		<th>nick_name</th>
-		<td>${mvo.nick_name }</td>
+		<td>${mvo.nickName }</td>
 	</tr>
 	<tr>
 		<th>REG_DATE</th>
-		<td>${bvo.registerDate }</td>
+		<td>${mvo.lastLogin }</td>
 	</tr>
-	</c:forEach>
 </table>
+
+<a href="/member/modify?email=${mvo.email}"><button>수정</button></a>
+
+
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 </body>
 </html>

@@ -11,7 +11,7 @@
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/nav.jsp"/>
 
-
+<h1>login</h1>
 <form action="/member/login" method="post">
 email : <input type="email" name="email" placeholder="아이디 입력">
 Password : <input type="password" name="pwd" placeholder="비밀번호 입력">
